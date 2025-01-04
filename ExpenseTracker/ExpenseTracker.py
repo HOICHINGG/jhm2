@@ -1,28 +1,71 @@
 import pandas as pd
 
-data = {
-    'Name': ['Alice', 'Bob', 'Charlie'],
-    'Age': [25,30,35],
-    'City': ['New York', 'Los Angeles', 'Chicago']       
-}
 
-df = pd.DataFrame
-print("Original DataFrame")
-print(df)
+try:
+    df = pd.read_csv("expenses.csv")
+except FileNotFoundError:
+    # If the file doesn't exist, create a new dataframe
+    df = pd.DataFrame({"Date":[], "Category":[], "Amount":[], "Type":[]})
 
-print("\nAccess the 'Name' column:")
-print(df['Name'])
+# Function to add a new transaction
+def add_transaction():
+    date = input("Enter the date (YYYY-MM-DD): ")
+    category = input("Enter the expense category: ")
+    amount = float(input("Enter the amount: "))
+    expense_type = input("Enter the expense type (Income/Expense): ")
+    
+    new_row = {"Date": date, "Category": category, "Amount": amount, "Type": expense_type}
+    df.loc[len(df)] = new_row
+    df.to_csv("expenses.csv", index=False)
+    print("Transaction added successfully!")
 
-print("\nAccess the second row using iloc:")
-print(df.ilco[1])
+# Function to edit an existing transaction
+def edit_transaction():
+    index = int(input("Enter the index of the transaction to edit: "))
+    date = input("Enter the new date (YYYY-MM-DD): ")
+    category = input("Enter the new expense category: ")
+    amount = float(input("Enter the new amount: "))
+    expense_type = input("Enter the new expense type (Income/Expense): ")
+    
+    df.loc[index] = {"Date": date, "Category": category, "Amount": amount, "Type": expense_type}
+    df.to_csv("expenses.csv", index=False)
+    print("Transaction edited successfully!")
 
-df['Salary'] = [70000, 80000, 75000]
-print("\nDataFrame after adding a new column 'Salary:")
-print(df)
+# Function to delete a transaction
+def delete_transaction():
+    index = int(input("Enter the index of the transaction to delete: "))
+    df.drop(index, inplace=True)
+    df.to_csv("expenses.csv", index=False)
+    print("Transaction deleted successfully!")
 
-filtered_df + df[df['Age'] > 28]
-print("\nFiltered DataFrame where Age > 28:")
-print(filtered_df)
+# Function to view the expense summary
+def view_summary():
+    print(df)
+    print("Total Expenses:", df[df["Type"] == "Expense"]["Amount"].sum())
+    print("Total Income:", df[df["Type"] == "Income"]["Amount"].sum())
 
-average_salary = df['Sarlary'].mean()
-print(f"\nAverage Salary: {average_salary}")
+# Main loop
+while True:
+    print("""
+    Personal Expense Tracker
+        1. Add Transaction
+        2. Edit Transaction 
+        3. Delete Transaction
+        4. View Summary
+        5. Save and Exit
+    """)
+    choice = input("Enter your choice: ")
+    
+    if choice == "1":
+        add_transaction()
+    elif choice == "2":
+        edit_transaction()
+    elif choice == "3":
+        delete_transaction()
+    elif choice == "4":
+        view_summary()
+    elif choice == "5":
+        print("Saving and exiting...")
+        break
+    else:
+        print("Invalid choice. Please try again.")
