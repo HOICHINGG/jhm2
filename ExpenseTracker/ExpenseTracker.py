@@ -1,11 +1,7 @@
-import pandas as pd
+mport pandas as pd
 
-
-try:
-    df = pd.read_csv("expenses.csv")
-except FileNotFoundError:
-    # If the file doesn't exist, create a new dataframe
-    df = pd.DataFrame({"Date":[], "Category":[], "Amount":[], "Type":[]})
+# Create a dataframe to store the expense data
+df = pd.DataFrame({"Date": [], "Category": [], "Amount": [], "Type": []})
 
 # Function to add a new transaction
 def add_transaction():
@@ -16,7 +12,6 @@ def add_transaction():
     
     new_row = {"Date": date, "Category": category, "Amount": amount, "Type": expense_type}
     df.loc[len(df)] = new_row
-    df.to_csv("expenses.csv", index=False)
     print("Transaction added successfully!")
 
 # Function to edit an existing transaction
@@ -28,14 +23,12 @@ def edit_transaction():
     expense_type = input("Enter the new expense type (Income/Expense): ")
     
     df.loc[index] = {"Date": date, "Category": category, "Amount": amount, "Type": expense_type}
-    df.to_csv("expenses.csv", index=False)
     print("Transaction edited successfully!")
 
 # Function to delete a transaction
 def delete_transaction():
     index = int(input("Enter the index of the transaction to delete: "))
     df.drop(index, inplace=True)
-    df.to_csv("expenses.csv", index=False)
     print("Transaction deleted successfully!")
 
 # Function to view the expense summary
@@ -69,3 +62,4 @@ while True:
         break
     else:
         print("Invalid choice. Please try again.")
+        
