@@ -59,7 +59,7 @@ while True:
         view_summary()
     elif choice == "5":
         print("Saving and exiting...")
+        df.to_csv("expense_data.csv", index=False)
         break
     else:
         print("Invalid choice. Please try again.")
-        
