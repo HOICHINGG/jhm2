@@ -1,4 +1,4 @@
-mport pandas as pd
+import pandas as pd
 
 # Create a dataframe to store the expense data
 df = pd.DataFrame({"Date": [], "Category": [], "Amount": [], "Type": []})
